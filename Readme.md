@@ -4,7 +4,14 @@
 
   **Dependencies**
 
+  - Docker  
+
+  **Technologies used**
+  - Java  
+  - SpringBoot  
+  - Maven
   - Docker
+  - Cassandra
   
   **Launch the development environment with Docker**
   - Clone the git repo
