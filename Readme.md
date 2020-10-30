@@ -9,38 +9,36 @@
   **Launch the development environment with Docker**
   - Clone the git repo
     ```
-    github.com/ramarvab
+     https://github.com/ramarvab/tinyurl
     ```  
   - To start the app
-  ```
-   cd tinyurl
-   docker-compose -f deployments/docker-compose.yml up
-  ```
+    ```
+     cd tinyurl
+     docker-compose -f deployments/docker-compose.yml up
+    ```
   - The first build takes time as maven needs to download the dependencies.
   
   **Accessing the service using rest**
   
   - To create short url for the long url
-  ```
-  curl --location --request POST 'localhost:8082/shorten' \
-  --header 'Content-Type: text/plain' \
-  --data-raw 'https://www.google.com/'
-  
-  
-  Output:
-  
-    {
-        "shortUrl": "http://localhost:8082/7kERuwNf",
-        "longUrl": "https://www.google.com/",
-        "creationDate": "2020-10-30T11:47:14.972+00:00"
-    }  
-  ```
+    ```
+        curl --location --request POST 'localhost:8082/shorten' \
+        --header 'Content-Type: text/plain' \
+        --data-raw 'https://github.com/ramarvab/tinyurl'
+        
+         Output:
+         {
+            "shortUrl": "http://localhost:8082/7kERuwNf",
+            "longUrl": "https://github.com/ramarvab/tinyurl",
+            "creationDate": "2020-10-30T11:47:14.972+00:00"
+          }  
+    ```
   - To redirect the short url to long url
-  ```
-  curl --location --request GET 'http://localhost:8082/7kERuwNf' 
+    ```
+        curl --location --request GET 'http://localhost:8082/7kERuwNf' 
   
-  or paste the url in the browser http://localhost:8082/7kERuwNf
-```
+        or paste the url in the browser http://localhost:8082/7kERuwNf
+    ```
 -  To know how many times the short url was accessed in last N days
     
     ```
@@ -62,7 +60,7 @@
 Tinyurl service converts the given longurl into short url which is of 8 characters.  
 For example if we shorten the longurl  
 
-`https://docs.datastax.com/en/docker/doc/docker/docker51/dockerVariables.html`  
+`https://github.com/ramarvab/tinyurl`  
 
  we would get   
  
@@ -101,19 +99,20 @@ as primary key column doesn't support those type of queries in cassandra
    - The key is generated using alphanumeric characters [A-Z, a-z, 0-9]. This would generate 62^8 combinations
      which would result in roughly 250 trillion possible keys which would suffice for our system.
   
- #### Improvement/Issues in Keygeneration
+ #### Improvement/Issues
     
    - In case of key collision, the application returns error. Instead of that we can keep generating keys 
    until there is no collision. This approach will increase the latency of the appliication as we need to 
    keep checking the key in the database until we found a valid key.
    - Another approach can be keep generating keys offline and use the pregenerated key for the url service.
    This will improve the speed and latency of the application.
+   - Better exception handling and writing test cases.
  
  
 #### scalability  
--  use consistent hashing for partitioning the data as Range based or Hashbased partitioning can lead to 
+-  Use consistent hashing for partitioning the data as Range based or Hashbased partitioning can lead to 
 skewness in the partitions because of hot url which generates most of the traffic.
-- for caching, we can use Least Recently Used eviction policy because for our service 80% of the traffic
+- For caching, we can use Least Recently Used eviction policy because for our service 80% of the traffic
 will be generated for top 20% of the urls.
      
 
