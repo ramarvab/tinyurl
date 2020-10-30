@@ -93,6 +93,7 @@ as primary key column doesn't support those type of queries in cassandra
 
 - As we store billions of rows and we don't need to use relationship between two objects, I used
  NoSql database like cassandra for storing the information
+- The data is persisted in local machine to avoid data loss when docker machine restarts.
  
  #### Creating ShortUrl
  
