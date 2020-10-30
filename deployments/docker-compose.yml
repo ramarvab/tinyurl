@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  cassandra:
+    image: "cassandra"
+    container_name: "cassandra"
+    build:
+      context: ../deployments/cassandra
+      dockerfile: Dockerfile
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+    volumes:
+      - ./data/cassandra:/var/lib/cassandra
+  backend:
+    image: "tinyurlapp"
+    container_name: "tinyurl"
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: on-failure
+    environment:
+      SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra
+    depends_on:
+      - cassandra
+    links:
+      - cassandra
+
+
+
+
